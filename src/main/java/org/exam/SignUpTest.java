@@ -9,6 +9,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class SignUpTest {
+    WebDriver driver;
+    String email;
+    String password;
 
     //1. Открыть браузер
     //2. Зайти на сайт https://www.sharelane.com/cgi-bin/register.py
@@ -49,14 +52,14 @@ public class SignUpTest {
         WebElement zipCodeField = driver.findElement(By.name("zip_code"));
         zipCodeField.sendKeys("qwertr");
         driver.findElement(By.cssSelector("input[value='Continue']")).click();
-        WebElement registerButton= driver.findElement(By.cssSelector("input[value='Continue']"));
+        WebElement registerButton = driver.findElement(By.cssSelector("input[value='Continue']"));
         WebElement message = driver.findElement(By.cssSelector("span.error_message"));
         Assert.assertTrue(registerButton.isDisplayed(), "Oops, error on page. ZIP code should have 5 digits");
     }
 
     @Test
     public void SingUpShouldBeValid() {
-        
+
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.sharelane.com/cgi-bin/register.py?page=1&zip_code=1234567890");
@@ -75,6 +78,7 @@ public class SignUpTest {
         Assert.assertTrue(message.isDisplayed(), "Account is created!");
 
     }
+
     @Test
     public void SingUpShouldNotBeValid() {
 
@@ -96,27 +100,38 @@ public class SignUpTest {
         Assert.assertTrue(message.isDisplayed(), "Oops, error on page. Some of your fields have invalid data or email was previously used");
 
     }
-//     @Test
-//    public void authorizationBeValid() {
-//        String email;
-//        String password;
-//        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
-//        WebDriver driver = new ChromeDriver();
-//        driver.get("https://www.sharelane.com/cgi-bin/register.py?page=1&zip_code=1234567890");
-//        WebElement FirstNameField = driver.findElement(By.name("first_name"));
-//        FirstNameField.sendKeys("Марина");
-//        WebElement LastNameField = driver.findElement(By.name("last_name"));
-//        LastNameField.sendKeys("Kopbb");
-//        WebElement EmailField = driver.findElement(By.name("email"));
-//        EmailField.sendKeys("Kopbb@tyu.ru");
-//        WebElement PasswordField = driver.findElement(By.name("password1"));
-//        PasswordField.sendKeys("12345");
-//        WebElement Password2Field = driver.findElement(By.name("password2"));
-//        Password2Field.sendKeys("12345");
-//        driver.findElement(By.cssSelector("input[value='Register']")).click();
-//        WebElement message = driver.findElement(By.cssSelector("span.confirmation_message"));
-//        Assert.assertTrue(message.isDisplayed(), "Account is created!");
-//
-//    }
-}
 
+    @Test
+    public void authorizationBeValid() {
+
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.sharelane.com/cgi-bin/register.py?page=1&zip_code=1234567890");
+        driver.findElement(By.name("first_name")).sendKeys("Green");
+        driver.findElement(By.name("last_name")).sendKeys("Maxim");
+        driver.findElement(By.name("email")).sendKeys("maxim@tyu.ru");
+        driver.findElement(By.name("password1")).sendKeys("12345");
+        driver.findElement(By.name("password2")).sendKeys("12345");
+        driver.findElement(By.cssSelector("input[value='Register']")).click();
+        WebElement message = driver.findElement(By.cssSelector("span.confirmation_message"));
+        Assert.assertTrue(message.isDisplayed(), "Account is created!");
+        String Email = driver.findElement(By.xpath("//td[text()='Email']/following::b")).getText();
+        String Password = driver.findElement(By.xpath("//td[text()='Password']/following::td")).getText();
+        driver.findElement(By.cssSelector("img[src='../images/logo.jpg']")).click();
+        driver.findElement(By.name("email")).sendKeys(Email);
+        driver.findElement(By.name("password")).sendKeys(Password);
+        driver.findElement(By.cssSelector("input[value='Login']")).click();
+    }
+
+    @Test
+    public void PaymentOneBook() {
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.sharelane.com/cgi-bin/main.py");
+        authorizationBeValid();
+
+    {
+
+
+    }
+}
