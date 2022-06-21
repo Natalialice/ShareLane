@@ -5,27 +5,27 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertTrue;
+
 public class SignUpTest {
     WebDriver driver;
-    String email;
 
     @BeforeClass
-    public void SetPathVariable() {
+    public void SetPathToWebDriver() {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
     }
 
     @BeforeMethod
     public void setUp(String url) {
         WebDriver driver = new ChromeDriver();
-        driver.get(url);
+        driver.get("https://www.sharelane.com/cgi-bin/register.py");
     }
 
-    String password;
     //1. Открыть браузер
     //2. Зайти на сайт https://www.sharelane.com/cgi-bin/register.py
     //3. ВВести цифры 12345
@@ -39,7 +39,7 @@ public class SignUpTest {
         // или так вместо 20 и 21 строки написать -  driver.findElement(By.name("zip_code")).sendKeys("00000");
         driver.findElement(By.cssSelector("input[value='Continue']")).click();
         WebElement registerButton = driver.findElement(By.cssSelector("input[value='Register']"));
-        Assert.assertTrue(registerButton.isDisplayed(), "Oops, error on page. ZIP code should have 5 digits");
+        assertTrue(registerButton.isDisplayed(), "Oops, error on page. ZIP code should have 5 digits");
     }
 
     @Test
@@ -47,7 +47,7 @@ public class SignUpTest {
         driver.findElement(By.name("zip_code")).sendKeys("1234567890");
         driver.findElement(By.cssSelector("input[value='Continue']")).click();
         WebElement registerButton = driver.findElement(By.cssSelector("input[value='Register']"));
-        Assert.assertTrue(registerButton.isDisplayed(), "Oops, error on page. ZIP code should have 5 digits");
+        assertTrue(registerButton.isDisplayed(), "Oops, error on page. ZIP code should have 5 digits");
 
     }
 
@@ -58,7 +58,7 @@ public class SignUpTest {
         driver.findElement(By.cssSelector("input[value='Continue']")).click();
         WebElement registerButton = driver.findElement(By.cssSelector("input[value='Continue']"));
         WebElement message = driver.findElement(By.cssSelector("span.error_message"));
-        Assert.assertTrue(registerButton.isDisplayed(), "Oops, error on page. ZIP code should have 5 digits");
+        assertTrue(registerButton.isDisplayed(), "Oops, error on page. ZIP code should have 5 digits");
     }
 
     @Test
@@ -71,7 +71,7 @@ public class SignUpTest {
         driver.findElement(By.name("password2")).sendKeys("12345");
         driver.findElement(By.cssSelector("input[value='Register']")).click();
         WebElement message = driver.findElement(By.cssSelector("span.confirmation_message"));
-        Assert.assertTrue(message.isDisplayed(), "Account is created!");
+        assertTrue(message.isDisplayed(), "Account is created!");
 
     }
 
@@ -85,7 +85,7 @@ public class SignUpTest {
         driver.findElement(By.name("password2")).sendKeys("12345");
         driver.findElement(By.cssSelector("input[value='Register']")).click();
         WebElement message = driver.findElement(By.cssSelector("span.error_message"));
-        Assert.assertTrue(message.isDisplayed(), "Oops, error on page. Some of your fields have invalid data or email was previously used");
+        assertTrue(message.isDisplayed(), "Oops, error on page. Some of your fields have invalid data or email was previously used");
 
     }
 
@@ -99,7 +99,7 @@ public class SignUpTest {
         driver.findElement(By.name("password2")).sendKeys("12345");
         driver.findElement(By.cssSelector("input[value='Register']")).click();
         WebElement message = driver.findElement(By.cssSelector("span.confirmation_message"));
-        Assert.assertTrue(message.isDisplayed(), "Account is created!");
+        assertTrue(message.isDisplayed(), "Account is created!");
         String Email = driver.findElement(By.xpath("//td[text()='Email']/following::b")).getText();
         String Password = driver.findElement(By.xpath("//td[text()='Password']/following::td")).getText();
         driver.findElement(By.cssSelector("img[src='../images/logo.jpg']")).click();
@@ -108,11 +108,11 @@ public class SignUpTest {
         driver.findElement(By.cssSelector("input[value='Login']")).click();
     }
 
-    @Test
-    public void PaymentOneBook() {
-        setUp("https://www.sharelane.com/cgi-bin/main.py");
-        authorizationBeValid();
-
+    @AfterMethod(alwaysRun = true)
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
 
