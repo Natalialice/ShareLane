@@ -20,11 +20,11 @@ public class SignUpTest {
         System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
     }
 
-    @BeforeMethod
-    public void setUp(String url) {
-        WebDriver driver = new ChromeDriver();
-        driver.get("https://www.sharelane.com/cgi-bin/register.py");
-    }
+//   @BeforeMethod
+//    public void setUp() {
+//        WebDriver driver = new ChromeDriver();
+//        driver.get("https://www.sharelane.com/cgi-bin/register.py");
+//    }
 
     //1. Открыть браузер
     //2. Зайти на сайт https://www.sharelane.com/cgi-bin/register.py
@@ -34,6 +34,8 @@ public class SignUpTest {
 
     @Test
     public void ZipCodeShouldBeValidMinD() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.sharelane.com/cgi-bin/register.py");
         WebElement zipCodeField = driver.findElement(By.name("zip_code"));
         zipCodeField.sendKeys("00000");
         // или так вместо 20 и 21 строки написать -  driver.findElement(By.name("zip_code")).sendKeys("00000");
@@ -44,6 +46,8 @@ public class SignUpTest {
 
     @Test
     public void ZipCodeShouldBeValidMoreMinD() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.sharelane.com/cgi-bin/register.py");
         driver.findElement(By.name("zip_code")).sendKeys("1234567890");
         driver.findElement(By.cssSelector("input[value='Continue']")).click();
         WebElement registerButton = driver.findElement(By.cssSelector("input[value='Register']"));
@@ -53,6 +57,8 @@ public class SignUpTest {
 
     @Test
     public void ZipCodeShouldNotBeValidWithLetters() {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.sharelane.com/cgi-bin/register.py");
         WebElement zipCodeField = driver.findElement(By.name("zip_code"));
         zipCodeField.sendKeys("qwertr");
         driver.findElement(By.cssSelector("input[value='Continue']")).click();
@@ -63,9 +69,10 @@ public class SignUpTest {
 
     @Test
     public void SingUpShouldBeValid() {
-
-        driver.findElement(By.name("First_name")).sendKeys("Bodod");
-        driver.findElement(By.name("Last_name")).sendKeys("Kopbb");
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.sharelane.com/cgi-bin/register.py?page=1&zip_code=1234567890");
+        driver.findElement(By.name("first_name")).sendKeys("Bodod");
+        driver.findElement(By.name("last_name")).sendKeys("Kopbb");
         driver.findElement(By.name("email")).sendKeys("Kopbb@tyu.ru");
         driver.findElement(By.name("password1")).sendKeys("12345");
         driver.findElement(By.name("password2")).sendKeys("12345");
@@ -77,7 +84,8 @@ public class SignUpTest {
 
     @Test
     public void SingUpShouldNotBeValid() {
-
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.sharelane.com/cgi-bin/register.py?page=1&zip_code=1234567890");
         driver.findElement(By.name("first_name")).sendKeys("Марина");
         driver.findElement(By.name("last_name")).sendKeys("Kopbb");
         driver.findElement(By.name("email")).sendKeys("Kopbb@tyu.ru");
@@ -91,7 +99,8 @@ public class SignUpTest {
 
     @Test
     public void authorizationBeValid() {
-
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://www.sharelane.com/cgi-bin/register.py?page=1&zip_code=1234567890");
         driver.findElement(By.name("first_name")).sendKeys("Green");
         driver.findElement(By.name("last_name")).sendKeys("Maxim");
         driver.findElement(By.name("email")).sendKeys("maxim@tyu.ru");

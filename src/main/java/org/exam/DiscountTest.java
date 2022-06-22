@@ -43,10 +43,10 @@ public class DiscountTest {
         driver.findElement(By.name("password")).sendKeys(Password);
         driver.findElement(By.cssSelector("input[value='Login']")).click();
     }
-   // public void discountOneBook(){
-    //    Login();
-    //    driver.get("https:");
- //   }
+    public void discountOneBook(){
+        Login();
+        driver.get("https:");
+  }
 
 
     @AfterMethod(alwaysRun = true)
